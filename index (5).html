@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Permohonan Tajaan Alat Bantu Pendengaran – BIG M x HEAR ME</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #14274E; --navy-2: #1F3A6B; --gold: #C9A227; --gold-soft: #F6EED3;
+    --ink: #1B1F2A; --muted: #5B6476; --line: #DCE1EA; --bg: #F5F6F9; --card: #FFFFFF;
+    --ok: #2E7D4F; --err: #B3261E;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "Source Sans 3", "Segoe UI", Arial, sans-serif; font-size: 16px; line-height: 1.55; }
+  header { background: var(--navy); color: #fff; padding: 36px 20px 64px; }
+  .wrap { max-width: 640px; margin: 0 auto; }
+  .logo { display: block; height: 56px; width: auto; max-width: 70%; margin: 0 0 22px; }
+  .kicker { color: var(--gold); font-weight: 600; letter-spacing: .02em; margin: 0 0 10px; }
+  h1 { font-family: "Playfair Display", Georgia, serif; font-size: clamp(1.7rem, 5.5vw, 2.4rem);
+    line-height: 1.15; margin: 0 0 14px; }
+  header p { margin: 0; color: #D7DEEB; max-width: 34em; }
+  .quota { display: flex; align-items: baseline; gap: 10px; margin-top: 22px;
+    border-top: 1px solid rgba(255,255,255,.18); padding-top: 16px; }
+  .quota b { font-family: "Playfair Display", Georgia, serif; font-size: 2rem; color: var(--gold); }
+  main { margin-top: -40px; padding: 0 14px 48px; }
+  .card { background: var(--card); border-radius: 14px; border: 1px solid var(--line);
+    padding: 22px 20px; margin-bottom: 14px; box-shadow: 0 2px 10px rgba(20,39,78,.05); }
+  h2 { font-family: "Playfair Display", Georgia, serif; font-size: 1.25rem; color: var(--navy); margin: 0 0 4px; }
+  .note { color: var(--muted); font-size: .92rem; margin: 0 0 16px; }
+  label { display: block; font-weight: 600; margin: 14px 0 6px; }
+  label .opt { font-weight: 400; color: var(--muted); }
+  input[type=text], input[type=tel], input[type=email], input[type=number], select, textarea {
+    width: 100%; padding: 12px 13px; border: 1px solid var(--line); border-radius: 10px;
+    font: inherit; background: #fff; color: var(--ink); }
+  input:focus, select:focus, textarea:focus { outline: 2px solid var(--gold); border-color: var(--gold); }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .units { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 6px; }
+  .unit { position: relative; }
+  .unit input { position: absolute; opacity: 0; }
+  .unit span { display: block; border: 1.5px solid var(--line); border-radius: 12px; padding: 14px; cursor: pointer; }
+  .unit span strong { display: block; font-size: 1.05rem; color: var(--navy); }
+  .unit span em { font-style: normal; color: var(--muted); font-size: .92rem; }
+  .unit input:checked + span { border-color: var(--gold); background: var(--gold-soft); }
+  .unit input:disabled + span { opacity: .4; cursor: not-allowed; }
+  .file { border: 1.5px dashed var(--line); border-radius: 12px; padding: 14px; margin-top: 6px; }
+  .file input { width: 100%; font: inherit; }
+  .file .picked { color: var(--ok); font-size: .92rem; margin-top: 6px; }
+  .check { display: flex; gap: 10px; align-items: flex-start; font-weight: 400; margin-top: 12px; }
+  .check input { margin-top: 4px; width: 18px; height: 18px; flex: none; accent-color: var(--navy); }
+  .hp { position: absolute; left: -9999px; }
+  button { width: 100%; padding: 16px; border: 0; border-radius: 12px; background: var(--navy);
+    color: #fff; font: 600 1.05rem "Source Sans 3", Arial, sans-serif; cursor: pointer; }
+  button:disabled { opacity: .55; cursor: wait; }
+  .msg { margin-top: 12px; padding: 12px 14px; border-radius: 10px; display: none; }
+  .msg.err { display: block; background: #FDECEA; color: var(--err); }
+  .done { text-align: center; padding: 34px 22px; }
+  .done .id { font-family: "Playfair Display", Georgia, serif; font-size: 2.2rem; color: var(--navy); margin: 8px 0; }
+  footer { text-align: center; color: var(--muted); font-size: .85rem; padding: 0 20px 30px; }
+  @media (max-width: 480px) { .row { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <img class="logo" src="hear-me-logo%20retrace%20tulisan%20white.png" alt="HEAR ME Malaysia" onerror="this.remove()">
+    <p class="kicker">BIG M × HEAR ME Malaysia</p>
+    <h1>Permohonan Tajaan Alat Bantu Pendengaran</h1>
+    <p>Tajaan RM1,500 bagi setiap unit alat bantu pendengaran (HA). Baki harga ditanggung sendiri oleh pemohon.</p>
+    <div class="quota" id="quota"><b id="baki">…</b><span id="bakiLabel">menyemak baki kuota</span></div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <form id="f" novalidate>
+      <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off">
+
+      <section class="card">
+        <h2>Maklumat penerima</h2>
+        <p class="note">Individu Hearing Deaf yang akan menerima alat bantu pendengaran.</p>
+        <label for="nama">Nama penuh</label>
+        <input id="nama" name="nama" type="text" required>
+        <div class="row">
+          <div><label for="ic">No. MyKad / MyKid</label>
+            <input id="ic" name="ic" type="text" inputmode="numeric" placeholder="cth. 150101-14-5555" required></div>
+          <div><label for="umur">Umur</label>
+            <input id="umur" name="umur" type="number" min="0" max="120" required></div>
+        </div>
+        <label for="negeri">Negeri</label>
+        <select id="negeri" name="negeri" required>
+          <option value="">Pilih negeri</option>
+          <option>Johor</option><option>Kedah</option><option>Kelantan</option><option>Melaka</option>
+          <option>Negeri Sembilan</option><option>Pahang</option><option>Perak</option><option>Perlis</option>
+          <option>Pulau Pinang</option><option>Sabah</option><option>Sarawak</option><option>Selangor</option>
+          <option>Terengganu</option><option>W.P. Kuala Lumpur</option><option>W.P. Labuan</option><option>W.P. Putrajaya</option>
+        </select>
+      </section>
+
+      <section class="card">
+        <h2>Ibu bapa / penjaga</h2>
+        <p class="note">Kami akan menghubungi nombor ini untuk urusan permohonan.</p>
+        <label for="penjaga">Nama penuh</label>
+        <input id="penjaga" name="penjaga" type="text" required>
+        <div class="row">
+          <div><label for="telefon">No. telefon (WhatsApp)</label>
+            <input id="telefon" name="telefon" type="tel" placeholder="cth. 012-3456789" required></div>
+          <div><label for="emel">Emel <span class="opt">(pilihan)</span></label>
+            <input id="emel" name="emel" type="email"></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Alat bantu pendengaran</h2>
+        <p class="note">Pilih bilangan unit yang dipohon.</p>
+        <div class="units">
+          <label class="unit"><input type="radio" name="unit" value="1" required>
+            <span><strong>1 unit</strong><em>Tajaan RM1,500</em></span></label>
+          <label class="unit"><input type="radio" name="unit" value="2">
+            <span><strong>2 unit</strong><em>Tajaan RM3,000</em></span></label>
+        </div>
+        <label for="model">Jenama / model HA <span class="opt">(jika sudah tahu)</span></label>
+        <input id="model" name="model" type="text">
+        <label for="pembekal">Pembekal / pusat audiologi <span class="opt">(jika sudah tahu)</span></label>
+        <input id="pembekal" name="pembekal" type="text">
+        <label for="harga">Harga seunit mengikut sebut harga (RM) <span class="opt">(jika ada)</span></label>
+        <input id="harga" name="harga" type="number" min="0" step="1" inputmode="numeric">
+      </section>
+
+      <section class="card">
+        <h2>Dokumen</h2>
+        <p class="note">Gambar (JPG/PNG) atau PDF. Boleh ambil gambar terus dengan telefon.</p>
+        <label>Sebut harga HA <span class="opt">(pilihan)</span></label>
+        <div class="file"><input type="file" data-key="sebutharga" accept="image/*,application/pdf"><div class="picked"></div></div>
+        <label for="catatan">Catatan <span class="opt">(pilihan)</span></label>
+        <textarea id="catatan" name="catatan" rows="3"></textarea>
+      </section>
+
+      <section class="card">
+        <label class="check"><input type="checkbox" id="setuju">
+          <span>Saya mengesahkan maklumat yang diberi adalah benar, dan bersetuju HEAR ME Malaysia menyimpan serta menggunakan maklumat dan dokumen ini bagi tujuan pengurusan tajaan ini sahaja, selaras dengan Akta Perlindungan Data Peribadi 2010.</span></label>
+        <div style="margin-top:18px"><button type="submit" id="btn">Hantar permohonan</button></div>
+        <div class="msg" id="msg"></div>
+      </section>
+    </form>
+
+    <section class="card done" id="done" hidden>
+      <h2>Permohonan diterima</h2>
+      <p class="note">No. rujukan anda</p>
+      <div class="id" id="refId"></div>
+      <p>Simpan nombor ini. Pihak HEAR ME akan menghubungi anda melalui WhatsApp.</p>
+    </section>
+  </div>
+</main>
+<footer>Persatuan Ibubapa Anak Masalah Pendengaran Malaysia (HEAR ME)</footer>
+
+<script>
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbywmwgjXqoGpM2ihO8LyW-jom1Q9IiDa2qS70qkXorRyFydrxN_vgGWNTtQL3kCekEq/exec';
+  const MAX_PDF = 5 * 1024 * 1024;
+
+  const $ = s => document.querySelector(s);
+  const form = $('#f'), btn = $('#btn'), msg = $('#msg');
+
+  // Baki kuota
+  fetch(SCRIPT_URL).then(r => r.json()).then(d => {
+    if (!d.ok) throw new Error();
+    const baki = Math.max(0, d.baki);
+    $('#baki').textContent = baki;
+    $('#bakiLabel').textContent = 'unit lagi boleh dipohon';
+    if (baki < 2) document.querySelector('input[name=unit][value="2"]').disabled = true;
+    if (baki <= 0) {
+      $('#bakiLabel').textContent = 'Kuota tajaan telah penuh. Terima kasih atas minat anda.';
+      btn.disabled = true; btn.textContent = 'Kuota penuh';
+    }
+  }).catch(() => { $('#quota').style.display = 'none'; });
+
+  document.querySelectorAll('input[type=file]').forEach(inp => {
+    inp.addEventListener('change', () => {
+      inp.nextElementSibling.textContent = inp.files[0] ? '✓ ' + inp.files[0].name : '';
+    });
+  });
+
+  form.addEventListener('submit', async ev => {
+    ev.preventDefault();
+    msg.className = 'msg'; msg.textContent = '';
+    try {
+      const fd = new FormData(form);
+      const need = ['nama', 'ic', 'umur', 'negeri', 'penjaga', 'telefon'];
+      if (need.some(k => !String(fd.get(k) || '').trim())) throw new Error('Sila lengkapkan semua maklumat wajib.');
+      if (!fd.get('unit')) throw new Error('Sila pilih bilangan unit.');
+      if (!$('#setuju').checked) throw new Error('Sila tandakan pengesahan dan persetujuan.');
+
+      btn.disabled = true; btn.textContent = 'Menyediakan dokumen…';
+      const files = {};
+      for (const inp of document.querySelectorAll('input[type=file]')) {
+        const f = inp.files[0];
+        if (!f) { if (inp.required) throw new Error('Sila muat naik semua dokumen wajib.'); continue; }
+        files[inp.dataset.key] = await prepare(f);
+      }
+
+      btn.textContent = 'Menghantar…';
+      const payload = Object.fromEntries(fd.entries());
+      payload.setuju = true; payload.files = files;
+      const res = await fetch(SCRIPT_URL, {
+        method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload)
+      });
+      const d = await res.json();
+      if (!d.ok) throw new Error(d.error || 'Tidak berjaya dihantar.');
+
+      form.hidden = true;
+      $('#refId').textContent = d.id;
+      $('#done').hidden = false;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (err) {
+      msg.className = 'msg err';
+      msg.textContent = err.message || 'Tidak berjaya dihantar. Sila cuba lagi.';
+      btn.disabled = false; btn.textContent = 'Hantar permohonan';
+    }
+  });
+
+  async function prepare(file) {
+    if (file.type === 'application/pdf') {
+      if (file.size > MAX_PDF) throw new Error('Fail PDF "' + file.name + '" melebihi 5MB.');
+      return { mimeType: file.type, data: await toBase64(file) };
+    }
+    if (!file.type.startsWith('image/')) throw new Error('Jenis fail "' + file.name + '" tidak disokong.');
+    const dataUrl = await shrinkImage(file, 1800);
+    return { mimeType: 'image/jpeg', data: dataUrl.split(',')[1] };
+  }
+
+  function toBase64(file) {
+    return new Promise((res, rej) => {
+      const r = new FileReader();
+      r.onload = () => res(r.result.split(',')[1]);
+      r.onerror = () => rej(new Error('Fail tidak dapat dibaca.'));
+      r.readAsDataURL(file);
+    });
+  }
+
+  function shrinkImage(file, maxPx) {
+    return new Promise((res, rej) => {
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => {
+        const scale = Math.min(1, maxPx / Math.max(img.width, img.height));
+        const c = document.createElement('canvas');
+        c.width = Math.round(img.width * scale); c.height = Math.round(img.height * scale);
+        const ctx = c.getContext('2d');
+        ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, c.width, c.height);
+        ctx.drawImage(img, 0, 0, c.width, c.height);
+        URL.revokeObjectURL(url);
+        res(c.toDataURL('image/jpeg', 0.85));
+      };
+      img.onerror = () => rej(new Error('Gambar "' + file.name + '" tidak dapat dibuka. Cuba ambil gambar semula.'));
+      img.src = url;
+    });
+  }
+</script>
+</body>
+</html>
